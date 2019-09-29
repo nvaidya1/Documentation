@@ -73,7 +73,7 @@ sudo systemctl status amamzon-cloudwatch-agent
 
 #### Step 6. Access CloudWatch console and monitor the Logs and Metrics 
 
-Access the ClooudWatch console and check the Logs:
+Access the CloudWatch console and check the Logs:
 
 ![supported-metrics](images/metric_view_categories.png)
 
