@@ -75,9 +75,11 @@ sudo systemctl status amamzon-cloudwatch-agent
 
 Access the ClooudWatch console and check the Logs:
 
+![supported-metrics](images/metric_view_categories.png)
 
 Access the ClooudWatch console and check the Metrics:
 
+![stats](images/metric_statistics_ec2_instance.png)
 
 ## Cleanup
 
