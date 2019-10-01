@@ -35,7 +35,7 @@ Registered OnPrem Instance:
 
 ## Step By Step Installation of CloudWatch Agent on EC2 and OnPrem Instances:
 
-### Step 1. Create IAM Role for the EC2 to access CloudWatch and AWS Systems Manager Parameter Store
+### Step 1. Create IAM Role for EC2 to access CloudWatch and AWS SSM Parameter Store:
 
 Create IAM role with name CloudWatchAgentServerRole (or another name that you prefer) for EC2 and select following policies:
   * **CloudWatchAgentServerPolicy** for access to CloudWatch service
