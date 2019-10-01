@@ -13,6 +13,7 @@ It is recommended to install AWS Systems Manager agent on the desired compute in
 Ensure the SSM Agent is running and with version 2.2.93.0 or later. Example of EC2 running Amazon Linux2 AMI:
 ```console
 sudo systemctl status amazon-ssm-agent
+rpm -qa amazon-ssm-agent
 ```
 
 ![Managed Instances listing under System Manager](images/ManagedInstancesList.png)
@@ -45,13 +46,22 @@ Attach the IAM role created above to the desired EC2 instance:
 #### Step 3. Download and install CloudWatch Agent using AWS Systems Manager
 
 Open AWS Systems Manager Console and follow the below steps:
-  * Select **Run Command**
+  * Select Managed Instances, then on Right side, Select Action dropdown list & select **Run Command**
+
+![Run Command Selection](images/RunCommandSelect.png)
+
   * In the Command document list, choose **AWS-ConfigureAWSPackage** (applicable for Windows / Linux)
-  * Select the desired instance from the list, select **Install** as Action, provide a name "AmazonCloudWatchAgent"
-  * Select **latest** for the Version and click **Run**
+
+![Run Command Document Package Selection](images/RunCommandDocumentSelectPackage.png)
+
+  * Scroll Down to select **Install** as Action, provide a name **AmazonCloudWatchAgent**
+  * Select **latest** for the Version and desired instances under Targets by selecting **Choose instances manually** 
+  * Choose an existing S3 bucket to store the output and Click **Run**
   * Check the command status by clicking button next to Instance name and select **View output**. Systems Manager should show that the agent was successfully installed.
 
 ![Run Command Output](images/RunCommandOutput.png)
+![Run Command Output2](images/RunCmd-InProgress.png)
+![Run Command Output3](images/Windows-RunCmd-OP.png)
 
 
 #### Step 4. Create configuration file for the CloudWatch agent and store it in SSM Parameter Store
@@ -66,9 +76,12 @@ sudo ./amazon-cloudwatch-agent-config-wizard
 ```
 
 ![CloudWatchAgent Configuration Wizard](images/CWAgentConfig.png)
+![CloudWatchAgent Configuration Wizard2](images/Windows-CWAgent-Config1.png)
 
 The json file created from the config-wizard is stored at: /opt/aws/amazon-cloudwatch-agent/bin/config.json
 On running the config-wizard, answer the questions asked to configure the exporting of desired metrics and logs. At the end, save this configuration on the Systems Parameter Store named as AmazonCloudWatch-linux.
+
+![CloudWatchAgent Configuration Wizard3](images/Windows-CWAgent-Config2.png)
 
 Later login to the SSM Parameter Store and check the new entry created and the desired configuration file in JSON format.
 
@@ -77,22 +90,27 @@ Later login to the SSM Parameter Store and check the new entry created and the d
 
 #### Step 5. Start CloudWatch agent using AWS Systems Manager
 
-Start the CloudWatch agent using SSM Run Command by selecting **AmazonCloudWatch-ManageAgent** configuration document and configuration location to be the Parameter Store entry name.
+As per the steps listed in Step 3 above, start the CloudWatch agent using SSM Run Command by selecting **AmazonCloudWatch-ManageAgent** configuration document and configuration location to be the Parameter Store entry name along with a Bucket Name to store the command output.
+
+![Run Command Document Selection](images/RunCommandDocumentSelect.png)
+
 Lastly, check the status of the CloudWatch agent service using command:
 
 ```console
 sudo systemctl status amamzon-cloudwatch-agent
 ```
+![CloudWatchAgent Status on Windows](images/Windows-ServiceStatus.png)
 
 #### Step 6. Access CloudWatch console and monitor the Logs and Metrics 
 
-Access the CloudWatch console and check the Logs:
-
-![dummy-picture1](images/metric_view_categories.png)
-
 Access the CloudWatch console and check the Metrics:
 
-![dummy-picture2](images/metric_statistics_ec2_instance.png)
+![CloudWatch Metrics](images/Metrics-CWAgent.png)
+![CloudWatch Metrics2](images/Metrics-DisplayWindowsVM.png)
+
+Access the CloudWatch console and check the Logs:
+
+![CloudWatch Logs](images/Logs-LinuxVM.png)
 
 ## Cleanup
 
