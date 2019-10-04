@@ -33,6 +33,8 @@ Registered OnPrem Instance:
 5. Start CloudWatch agent using AWS Systems Manager
 6. Access CloudWatch console and monitor the Logs and Metrics
 
+**Note**: All the steps, except Step 4, are similar for the Linux and Windows based EC2 instances.
+
 ## Step By Step Installation of CloudWatch Agent on EC2 and OnPrem Instances:
 
 ### Step 1. Create IAM Role for EC2 to access CloudWatch and AWS SSM Parameter Store:
@@ -149,6 +151,8 @@ Windows Command(s):
 
 
 ### Step 6. Access CloudWatch console and monitor the Logs and Metrics
+
+**Note**: The metrics and logs can take up to 5 minutes to be displayed on CloudWatch, depending upon the configuration parameter entered in earlier step.
 
 Access the CloudWatch console and check the Metrics:
 
