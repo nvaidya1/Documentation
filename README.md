@@ -1,6 +1,6 @@
 # CloudWatch agent best practices
 
-CloudWatch is an essential monitoring service offered on AWS Console to track the events and health of various resources. In order to monitor the health of compute resources like EC2 OR OnPrem instances, the CloudWatch agent would need to be installed and configured. The latest [CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) offers unified functionality of exporting both the logs and metrics from the compute resources to the CloudWatch service. 
+CloudWatch is an essential monitoring service offered on AWS Console to track the events and health of various resources. In order to monitor the health of compute resources like EC2 OR OnPrem instances, the CloudWatch agent would need to be installed and configured. The latest [CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) offers unified functionality of exporting both the logs and metrics from the compute resources to the CloudWatch service.
 
 This document will guide the user through the series of steps to install CloudWatch agent on EC2 and OnPrem compute instances running Windows OR Linux Operating System and review the exported logs and metrics on CloudWatch.
 Though there are multiple methods to install CloudWatch agent (using SSM / manually via command line / using AWS CloudFormation), we will follow the installation using SSM.
@@ -19,10 +19,10 @@ rpm -qa amazon-ssm-agent
 ```
 
 List of instances registered under System Manager, Managed Instances:
-![Managed Instances listing under System Manager](images/ManagedInstancesList.png)
+<kbd>![Managed Instances listing under System Manager](images/ManagedInstancesList.png)</kbd>
 
 Registered OnPrem Instance:
-![Onprem Instance under Managed Instances](images/OnpremInstance.png)
+<kbd>![Onprem Instance under Managed Instances](images/OnpremInstance.png)</kbd>
 
 ## Quick Overview of Installation Steps:
 
@@ -31,7 +31,7 @@ Registered OnPrem Instance:
 3. Download and install CloudWatch Agent using AWS Systems Manager
 4. Create configuration file for the CloudWatch agent and store it in SSM Parameter Store
 5. Start CloudWatch agent using AWS Systems Manager
-6. Access CloudWatch console and monitor the Logs and Metrics 
+6. Access CloudWatch console and monitor the Logs and Metrics
 
 ## Step By Step Installation of CloudWatch Agent on EC2 and OnPrem Instances:
 
@@ -80,7 +80,7 @@ Open AWS Systems Manager Console and follow the below steps:
 ![Run Command Document Package Selection](images/RunCommandDocumentSelectPackage.png)
 
   * Scroll Down to select **Install** as Action, provide a name **AmazonCloudWatchAgent**
-  * Select **latest** for the Version and desired instances under Targets by selecting **Choose instances manually** 
+  * Select **latest** for the Version and desired instances under Targets by selecting **Choose instances manually**
   * Choose an existing S3 bucket to store the output and Click **Run**
   * Check the command status by clicking button next to Instance name and select **View output**. Systems Manager should show that the agent was successfully installed.
 
@@ -90,7 +90,7 @@ Run Command issued and in progress:
 Run Command Status showing success and summarized output:
 ![Run Command Output3](images/Windows-RunCmd-OP.png)
 
-Run Command Output to check the complete output: 
+Run Command Output to check the complete output:
 ![Run Command Output](images/RunCommandOutput.png)
 
 
@@ -148,7 +148,7 @@ Windows Command(s):
 
 
 
-### Step 6. Access CloudWatch console and monitor the Logs and Metrics 
+### Step 6. Access CloudWatch console and monitor the Logs and Metrics
 
 Access the CloudWatch console and check the Metrics:
 
@@ -169,7 +169,3 @@ Access the CloudWatch console and check the Logs:
 ## Cleanup
 
 On the completion of the lab, please feel free to stop the CloudWatch agent on the EC2 instances to avoid any additional charges. Additionally, may terminate the EC2 instances that are launched specifically for this lab.
-
-
-
-
