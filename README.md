@@ -46,7 +46,7 @@ Select the IAM service, Click on Roles on the Left side, Click Create Role, Make
 ![IAM Policy Selection](images/IAMRolePolicies.png)
 
 Give the Role name and create role:
-![IAM Role Name](images/IAMRoleName.png)
+<kbd>![IAM Role Name](images/IAMRoleName.png)</kbd>
 
 
 
