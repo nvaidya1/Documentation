@@ -3,14 +3,14 @@
 CloudWatch is an essential monitoring service offered on AWS Console to track the events and health of various resources. In order to monitor the health of compute resources like EC2 OR OnPrem instances, the CloudWatch agent would need to be installed and configured. The latest [CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) offers unified functionality of exporting both the logs and metrics from the compute resources to the CloudWatch service.
 
 This document will guide the user through the series of steps to install CloudWatch agent on EC2 and OnPrem compute instances running Windows OR Linux Operating System and review the exported logs and metrics on CloudWatch.
-Though there are multiple methods to install CloudWatch agent (using SSM / manually via command line / using AWS CloudFormation), we will follow the installation using SSM.
+Though there are multiple methods to installCloudWatch agent (using SSM / manually via command line / using AWS CloudFormation), we will follow the installation using SSM.
 
 ## Pre-Requisites
 
 A running EC2 instance:
 It is recommended to install AWS Systems Manager agent on the desired compute instances and associate an IAM role with **AmazonEC2RoleforSSM** policy.Once configured, please ensure the instances are visible under the Systems Manager Registered Instances. For more information on procedure to install AWS Systems Manager agent, please follow this link: [About AWS Systems Manager Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/prereqs-ssm-agent.html)
 
-> Hint: Ensure the SSM Agent is running and with version 2.2.93.0 or later. 
+> Note: Ensure the SSM Agent is running and with version 2.2.93.0 or later.
 
 Example of EC2 running Amazon Linux2 AMI:
 
@@ -26,7 +26,7 @@ List of instances registered under System Manager, Managed Instances:
 Registered OnPrem Instance:
 <kbd>![Onprem Instance under Managed Instances](images/OnpremInstance.png)</kbd>
 
-## Quick Overview of Installation Steps:
+## Quick Overview of Installation Steps using SSM:
 
 1. Create IAM Role for the EC2 to access CloudWatch Logs and AWS Systems Manager (SSM) System Parameter Store
 2. Attach the IAM Role to the EC2 instance(s)
@@ -38,13 +38,13 @@ Registered OnPrem Instance:
 
 ** **Note**: All the steps, except Step 4, are similar for the Linux and Windows based EC2 instances.
 
-> ## [EXTRA] Other ways to install CloudWatch Agent
-> 
-> If you want to install CloudWatch Agent with a different method, please follow one of those links:
-> * [Installing the CloudWatch Agent using the Command Line](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/installing-cloudwatch-agent-commandline.html)
-> * [Installing the CloudWacth Agent using AWS CloudFormation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html)
->
-> Please feel free to experiment on the different methods mentioned above
+### Other ways to install CloudWatch Agent
+
+If you want to install CloudWatch Agent with a different method, please follow one of the below links:
+* [Installing the CloudWatch Agent using the Command Line](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/installing-cloudwatch-agent-commandline.html)
+* [Installing the CloudWacth Agent using AWS CloudFormation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html)
+
+Please feel free to experiment on the different methods mentioned above.
 
 ## Step By Step Installation of CloudWatch Agent on EC2 and OnPrem Instances:
 
@@ -176,15 +176,13 @@ Access the CloudWatch console and check the Logs:
 
 
 
-
-
 ## Cleanup
 
 On the completion of the lab, please feel free to stop the CloudWatch agent on the EC2 instances to avoid any additional charges. Additionally, may terminate the EC2 instances that are launched specifically for this lab.
 
 ## References
 
-* [CWAgent Onpremises](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html
+* [CWAgent Onprem](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html
 )
 
 * [CWAgent on EC2](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html
@@ -198,12 +196,16 @@ On the completion of the lab, please feel free to stop the CloudWatch agent on t
 * [Extra steps for Onprem](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html
 )
 
-> ## [Extra] Granularity and Retention Period
-> Depending on the granularity of the metric, the retention time may vary. As of October 2019, those are the retention periods:
-> 
-> * Data points with a period of less than 60 seconds are available for 3 hours. These data points are high-resolution custom metrics.
-> * Data points with a period of 60 seconds (1 minute) are available for 15 days
-> * Data points with a period of 300 seconds (5 minute) are available for 63 days 
-> * Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months)
-> 
-> For current values, please verify on this [link](https://aws.amazon.com/cloudwatch/faqs/).
+---
+## APPENDIX
+
+
+### Granularity and Retention Period
+Depending on the granularity of the metric, the retention time may vary. As of October 2019, these are the retention periods:
+
+* Data points with a period of less than 60 seconds are available for 3 hours. These data points are high-resolution custom metrics.
+* Data points with a period of 60 seconds (1 minute) are available for 15 days
+* Data points with a period of 300 seconds (5 minute) are available for 63 days 
+* Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months)
+
+For current values, please verify on this [link](https://aws.amazon.com/cloudwatch/faqs/).
