@@ -209,3 +209,131 @@ Depending on the granularity of the metric, the retention time may vary. As of O
 * Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months)
 
 For current values, please verify on this [link](https://aws.amazon.com/cloudwatch/faqs/).
+
+---
+### Installing the CloudWatch Agent using the Command Line
+
+Following are the steps to install CloudWatch Agent using command line on the instance. ie. The shell commands for Linux and PowerShell commands for Windows. Primarily following steps:
+1. Download the files and verify the integrity
+2. Installation of CloudWatchAgent
+3. Configure the CloudWatchAgent and Start the CloudWatchAgent
+
+####1. Download and Verification of the files:
+
+**EC2 / Onprem: Linux:**
+
+Download:
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+
+Verify:
+(a) Download, import public GPG key & verify:
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/assets/amazon-cloudwatch-agent.gpg
+gpg --import amazon-cloudwatch-agent.gpg => note the <key-value>
+gpg --fingerprint <key-value> => note the fingerprint
+
+The key fingerprint string should be equal to the following:
+9376 16F3 450B 7D80 6CBD 9725 D581 6730 3B78 9C72
+
+(b) Using GPG key, verify with Download Signature file:
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm.sig
+
+gpg --verify amazon-cloudwatch-agent.rpm.sig amazon-cloudwatch-agent.rpm
+
+=> should say: Good signature from "Amazon CloudWatch Agent"
+
+
+**EC2 / OnPrem: Windows:**
+
+Download:
+https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/amazon-cloudwatch-agent.msi
+
+Verify:
+(a) Download, import public GPG key & verify:
+Download and install GnuPG for Windows from https://gnupg.org/download/. When installing, include the Shell Extension (GpgEx) option.
+You can perform the remaining steps in Windows PowerShell.
+
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/assets/amazon-cloudwatch-agent.gpg -OutFile amazon-cloudwatch-agent.gpg
+gpg --import amazon-cloudwatch-agent.gpg => note the <key-value>
+gpg --fingerprint <key-value>
+
+The key fingerprint string should be equal to the following:
+9376 16F3 450B 7D80 6CBD 9725 D581 6730 3B78 9C72
+
+(b) Using GPG key, verify with Download Signature file:
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/amazon-cloudwatch-agent.msi.sig
+
+gpg --verify amazon-cloudwatch-agent.msi.sig amazon-cloudwatch-agent.msi
+
+=> should say: Good signature from "Amazon CloudWatch Agent"
+
+
+####2. Installation of the CloudWatch Agent:
+
+**Linux:**
+EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm
+Onprem: sudo aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
+
+**Windows:**
+EC2: msiexec /i amazon-cloudwatch-agent.msi
+OnPrem: aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
+
+
+####3. Configure and Start the CloudWatch Agent:
+The configuration steps are the same as covered in the main section for Linux and Windows. The below steps are used to start the agent:
+
+**Linux:**
+EC2: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:configuration-file-path -s
+OnPrem: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -c file:<configuration-file-path> -s
+
+**Windows:**
+EC2: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:configuration-file-path -s
+OnPrem: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m onPremise -c file:configuration-file-path -s
+
+---
+### Installing the CloudWatch Agent using the CloudFormation
+
+####Steps for Linux based EC2 Instance:
+* Login to the console and login to the Cloud9 environment
+* From the Bash shell, ensure the aws cli commands are working fine by typing: aws --version
+* Download the CloudFormation template using below command:
+
+```
+curl -O https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/aws/solutions/AmazonCloudWatchAgent/inline/amazon_linux.template
+```
+
+* Now depending upon the region, run the below commands using appropriate AMI Name, KeyPair name, IAM Role name:
+
+Example for us-east-2 region:
+```
+aws cloudformation create-stack --stack-name CFCWAgentDeploy \
+--template-body file:////$PWD/amazon_linux.template \
+--parameters \
+ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
+ParameterKey=InstanceType,ParameterValue=t2.micro \
+ParameterKey=InstanceAMI,ParameterValue=ami-00c03f7f7f2ec15c3 \
+ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
+--capabilities CAPABILITY_IAM
+```
+
+####Steps for Windows based EC2 Instance:
+* Login to the console and login to the Cloud9 environment
+* From the Bash shell, ensure the aws cli commands are working fine by typing: aws --version
+* Download the CloudFormation template using below command:
+
+```
+curl -O https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/aws/solutions/AmazonCloudWatchAgent/inline/windows.template
+```
+
+* Now depending upon the region, run the below commands using appropriate AMI Name, KeyPair name, IAM Role name:
+
+Example for us-east-2 region:
+```
+aws cloudformation create-stack --stack-name CFCWAgentDeploy \
+--template-body file:////$PWD/amazon_linux.template \
+--parameters \
+ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
+ParameterKey=InstanceType,ParameterValue=t2.micro \
+ParameterKey=InstanceAMI,ParameterValue=ami-04203dd87d4abd6f6 \
+ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
+--capabilities CAPABILITY_IAM
+```
