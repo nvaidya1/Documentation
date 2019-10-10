@@ -225,78 +225,94 @@ Following are the steps to install CloudWatch Agent using command line on the in
 
 **EC2 / Onprem: Linux:**
 
-Download:
+Download the CloudWatch Agent RPM:
+```
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+```
 
 Verify:
-(a) Download, import public GPG key & verify:
+(a) Download, import public GPG key & verify itself first:
+```
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/assets/amazon-cloudwatch-agent.gpg
 gpg --import amazon-cloudwatch-agent.gpg => note the <key-value>
 gpg --fingerprint <key-value> => note the fingerprint
+```
 
 The key fingerprint string should be equal to the following:
 9376 16F3 450B 7D80 6CBD 9725 D581 6730 3B78 9C72
 
-(b) Using GPG key, verify with Download Signature file:
+(b) Using GPG key, verify with Downloaded Signature file:
+```
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm.sig
-
 gpg --verify amazon-cloudwatch-agent.rpm.sig amazon-cloudwatch-agent.rpm
-
+```
 => should say: Good signature from "Amazon CloudWatch Agent"
 
 
 **EC2 / OnPrem: Windows:**
 
-Download:
+Download the CloudWatch Agent MSI:
+```
 https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/amazon-cloudwatch-agent.msi
+```
 
 Verify:
-(a) Download, import public GPG key & verify:
+(a) Download, import public GPG key & verify itself first:
 Download and install GnuPG for Windows from https://gnupg.org/download/. When installing, include the Shell Extension (GpgEx) option.
 You can perform the remaining steps in Windows PowerShell.
 
+```
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/assets/amazon-cloudwatch-agent.gpg -OutFile amazon-cloudwatch-agent.gpg
 gpg --import amazon-cloudwatch-agent.gpg => note the <key-value>
 gpg --fingerprint <key-value>
+```
 
 The key fingerprint string should be equal to the following:
 9376 16F3 450B 7D80 6CBD 9725 D581 6730 3B78 9C72
 
 (b) Using GPG key, verify with Download Signature file:
+```
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/amazon-cloudwatch-agent.msi.sig
-
 gpg --verify amazon-cloudwatch-agent.msi.sig amazon-cloudwatch-agent.msi
-
+```
 => should say: Good signature from "Amazon CloudWatch Agent"
 
 
 #### 2. Installation of the CloudWatch Agent:
 
 **Linux:**  
+```
 EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm  
 Onprem: sudo aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
+```
 
-**Windows:**  
+**Windows:**
+```
 EC2: msiexec /i amazon-cloudwatch-agent.msi  
 OnPrem: aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
-
+```
 
 #### 3. Configure and Start the CloudWatch Agent:
 The configuration steps are the same as covered in the main section for Linux and Windows. The below steps are used to start the agent:
 
 **Linux:**  
+```
 EC2: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:configuration-file-path -s  
 OnPrem: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -c file:<configuration-file-path> -s
+```
 
 **Windows:**  
+```
 EC2: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:configuration-file-path -s  
 OnPrem: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m onPremise -c file:configuration-file-path -s
+```
 
 ---
+
 ### Installing the CloudWatch Agent using the CloudFormation
 
 Below are the steps to install and start CloudWatch Agent using CloudFormation.
-Pre-Requsites:
+Pre-Requisites:
 1. Ensure that the IAM Role is created.
 2. Find the required AMI names to install desired OS
 3. Required System Parameter store configuration is created.
