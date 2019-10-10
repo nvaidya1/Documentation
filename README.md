@@ -12,7 +12,7 @@ Though there are multiple methods to installCloudWatch agent (using SSM / manual
 A running EC2 instance:
 It is recommended to install AWS Systems Manager agent on the desired compute instances and associate an IAM role with **AmazonEC2RoleforSSM** policy.Once configured, please ensure the instances are visible under the Systems Manager Registered Instances. For more information on procedure to install AWS Systems Manager agent, please follow this link: [About AWS Systems Manager Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/prereqs-ssm-agent.html)
 
-> Note: Ensure the SSM Agent is running and with version 2.2.93.0 or later.
+**Note:** Ensure the SSM Agent is running and with version 2.2.93.0 or later.
 
 Example of EC2 running Amazon Linux2 AMI:
 
@@ -44,7 +44,9 @@ Registered OnPrem Instance:
 
 If you want to install CloudWatch Agent with a different method, please follow one of the below links:
 * [Installing the CloudWatch Agent using the Command Line](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/installing-cloudwatch-agent-commandline.html)
+* [Installing the CloudWatch Agent using the Command Line](#Installing the CloudWatch Agent using the Command Line)
 * [Installing the CloudWacth Agent using AWS CloudFormation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html)
+* [Installing the CloudWacth Agent using AWS CloudFormation](#Installing the CloudWatch Agent using the CloudFormation)
 
 Please feel free to experiment on the different methods mentioned above.
 
