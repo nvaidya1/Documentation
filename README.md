@@ -324,6 +324,25 @@ ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
 --capabilities CAPABILITY_IAM
 ```
 
+If SSM Parameter Store is configured with an entry for Linux instance (eg. AmazonCloudWatch-Linux), then you may use the below procedure:
+
+```
+curl -o amazon_linux_ssm.template https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/aws/solutions/AmazonCloudWatchAgent/ssm/amazon_linux.template
+```
+
+Example for us-east-2 region:
+```
+aws cloudformation create-stack --stack-name CFCWAgentSSMWindowsDeploy \
+--template-body file:////$PWD/amazon_linux_ssm.template \
+--parameters \
+ParameterKey=SSMKey,ParameterValue=AmazonCloudWatch-Linux \
+ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
+ParameterKey=InstanceType,ParameterValue=t2.micro \
+ParameterKey=InstanceAMI,ParameterValue=ami-00c03f7f7f2ec15c3 \
+ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
+--capabilities CAPABILITY_IAM
+```
+
 #### Steps for Windows based EC2 Instance:
 * Login to the console and login to the Cloud9 environment
 * From the Bash shell, ensure the aws cli commands are working fine by typing: aws --version
@@ -340,6 +359,25 @@ Example for us-east-2 region:
 aws cloudformation create-stack --stack-name CFCWAgentWindowsDeploy \
 --template-body file:////$PWD/amazon_linux.template \
 --parameters \
+ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
+ParameterKey=InstanceType,ParameterValue=t2.micro \
+ParameterKey=InstanceAMI,ParameterValue=ami-04203dd87d4abd6f6 \
+ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
+--capabilities CAPABILITY_IAM
+```
+
+If SSM Parameter Store is configured with an entry for Windows instance (eg. AmazonCloudWatch-Windows), then you may use the below procedure:
+
+```
+curl -o windows_ssm.template https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/master/aws/solutions/AmazonCloudWatchAgent/ssm/windows.template
+```
+
+Example for us-east-2 region:
+```
+aws cloudformation create-stack --stack-name CFCWAgentSSMWindowsDeploy \
+--template-body file:////$PWD/windows_ssm.template \
+--parameters \
+ParameterKey=SSMKey,ParameterValue=AmazonCloudWatch-Windows \
 ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
 ParameterKey=InstanceType,ParameterValue=t2.micro \
 ParameterKey=InstanceAMI,ParameterValue=ami-04203dd87d4abd6f6 \
