@@ -43,10 +43,9 @@ Registered OnPrem Instance:
 ### Other ways to install CloudWatch Agent
 
 If you want to install CloudWatch Agent with a different method, please follow one of the below links:
-* [Installing the CloudWatch Agent using the Command Line](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/installing-cloudwatch-agent-commandline.html)
-* [Installing the CloudWatch Agent using the Command Line](#Installing the CloudWatch Agent using the Command Line)
-* [Installing the CloudWacth Agent using AWS CloudFormation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent-New-Instances-CloudFormation.html)
-* [Installing the CloudWacth Agent using AWS CloudFormation](#Installing the CloudWatch Agent using the CloudFormation)
+
+* [Installing the CloudWatch Agent using the Command Line](#Installing-the-CloudWatch-Agent-using-the-Command-Line)
+* [Installing the CloudWatch Agent using AWS CloudFormation](#Installing-the-CloudWatch-Agent-using-the-CloudFormation)
 
 Please feel free to experiment on the different methods mentioned above.
 
