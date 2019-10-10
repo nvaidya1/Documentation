@@ -221,7 +221,7 @@ Following are the steps to install CloudWatch Agent using command line on the in
 2. Installation of CloudWatchAgent
 3. Configure the CloudWatchAgent and Start the CloudWatchAgent
 
-####1. Download and Verification of the files:
+#### 1. Download and Verification of the files:
 
 **EC2 / Onprem: Linux:**
 
@@ -270,26 +270,26 @@ gpg --verify amazon-cloudwatch-agent.msi.sig amazon-cloudwatch-agent.msi
 => should say: Good signature from "Amazon CloudWatch Agent"
 
 
-####2. Installation of the CloudWatch Agent:
+#### 2. Installation of the CloudWatch Agent:
 
-**Linux:**
-EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm
+**Linux:**  
+EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm  
 Onprem: sudo aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
 
-**Windows:**
-EC2: msiexec /i amazon-cloudwatch-agent.msi
+**Windows:**  
+EC2: msiexec /i amazon-cloudwatch-agent.msi  
 OnPrem: aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
 
 
-####3. Configure and Start the CloudWatch Agent:
+#### 3. Configure and Start the CloudWatch Agent:
 The configuration steps are the same as covered in the main section for Linux and Windows. The below steps are used to start the agent:
 
-**Linux:**
-EC2: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:configuration-file-path -s
+**Linux:**  
+EC2: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:configuration-file-path -s  
 OnPrem: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -c file:<configuration-file-path> -s
 
-**Windows:**
-EC2: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:configuration-file-path -s
+**Windows:**  
+EC2: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:configuration-file-path -s  
 OnPrem: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m onPremise -c file:configuration-file-path -s
 
 ---
@@ -301,7 +301,7 @@ Pre-Requsites:
 2. Find the required AMI names to install desired OS
 3. Required System Parameter store configuration is created.
 
-####Steps for Linux based EC2 Instance:
+#### Steps for Linux based EC2 Instance:
 * Login to the console and login to the Cloud9 environment
 * From the Bash shell, ensure the aws cli commands are working fine by typing: aws --version
 * Download the CloudFormation template using below command:
@@ -324,7 +324,7 @@ ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
 --capabilities CAPABILITY_IAM
 ```
 
-####Steps for Windows based EC2 Instance:
+#### Steps for Windows based EC2 Instance:
 * Login to the console and login to the Cloud9 environment
 * From the Bash shell, ensure the aws cli commands are working fine by typing: aws --version
 * Download the CloudFormation template using below command:
