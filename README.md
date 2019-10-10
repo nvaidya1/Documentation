@@ -2,6 +2,8 @@
 
 CloudWatch is an essential monitoring service offered on AWS Console to track the events and health of various resources. In order to monitor the health of compute resources like EC2 OR OnPrem instances, the CloudWatch agent would need to be installed and configured. The latest [CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) offers unified functionality of exporting both the logs and metrics from the compute resources to the CloudWatch service.
 
+It is a recommended best practice to install CloudWatch Agent on the compute resources spawned for various Operating Systems in order to export logs and desired metrics to CloudWatch service.
+
 This document will guide the user through the series of steps to install CloudWatch agent on EC2 and OnPrem compute instances running Windows OR Linux Operating System and review the exported logs and metrics on CloudWatch.
 Though there are multiple methods to installCloudWatch agent (using SSM / manually via command line / using AWS CloudFormation), we will follow the installation using SSM.
 
@@ -291,6 +293,12 @@ OnPrem: ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m onPremise -c file:c
 
 ---
 ### Installing the CloudWatch Agent using the CloudFormation
+
+Below are the steps to install and start CloudWatch Agent using CloudFormation.
+Pre-Requsites:
+1. Ensure that the IAM Role is created.
+2. Find the required AMI names to install desired OS
+3. Required System Parameter store configuration is created.
 
 ####Steps for Linux based EC2 Instance:
 * Login to the console and login to the Cloud9 environment
