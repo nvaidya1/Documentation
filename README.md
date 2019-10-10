@@ -314,7 +314,7 @@ curl -O https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/m
 
 Example for us-east-2 region:
 ```
-aws cloudformation create-stack --stack-name CFCWAgentDeploy \
+aws cloudformation create-stack --stack-name CFCWAgentLinuxDeploy \
 --template-body file:////$PWD/amazon_linux.template \
 --parameters \
 ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
@@ -337,7 +337,7 @@ curl -O https://raw.githubusercontent.com/awslabs/aws-cloudformation-templates/m
 
 Example for us-east-2 region:
 ```
-aws cloudformation create-stack --stack-name CFCWAgentDeploy \
+aws cloudformation create-stack --stack-name CFCWAgentWindowsDeploy \
 --template-body file:////$PWD/amazon_linux.template \
 --parameters \
 ParameterKey=KeyName,ParameterValue=<key-name-without-pem-extension> \
