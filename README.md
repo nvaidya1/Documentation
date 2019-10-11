@@ -315,7 +315,6 @@ Below are the steps to install and start CloudWatch Agent using CloudFormation.
 Pre-Requisites:
 1. Ensure that the IAM Role is created.
 2. Find the required AMI names to install desired OS
-3. Required System Parameter store configuration is created.
 
 #### Steps for Linux based EC2 Instance:
 * Login to the console and login to the Cloud9 environment
