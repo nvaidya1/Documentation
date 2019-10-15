@@ -235,11 +235,13 @@ For current values, please verify on this [link](https://aws.amazon.com/cloudwat
 
 The mechanism offers to install CloudWatch Agent with default configuration. The custom configuration will be supported in near future.
 
-Access AWS Systems Manager Quick Start Link and select "Edit All" button:
+(a) Access AWS Systems Manager Quick Start Link and select "Edit All" button:
 <kbd>![AWS Systems Manager Quick Start: Select Edit All](images/SSMQuickSetup.png)</kbd>
 
-Select checkboxes for CloudWatch Agent & select desired instances from the registered instances to install CloudWatch Agent:
+(b) Select checkboxes for CloudWatch Agent & select desired instances from the registered instances to install CloudWatch Agent:
 <kbd>![AWS Systems Manager Quick Start: Select options for CloudWatch Agent and instances ](images/SSMQuickSetup2.png)</kbd>
+
+The rest of the selection is self-explanatory.
 
 ---
 ### Installing the CloudWatch Agent using the Command Line
