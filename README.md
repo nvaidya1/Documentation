@@ -46,6 +46,7 @@ If you want to install CloudWatch Agent with a different method, please follow o
 
 * [Installing the CloudWatch Agent using the Command Line](#Installing-the-CloudWatch-Agent-using-the-Command-Line)
 * [Installing the CloudWatch Agent using AWS CloudFormation](#Installing-the-CloudWatch-Agent-using-the-CloudFormation)
+* [Using AWS Systems Manager Quick Start for CloudWatch Agent Installation](https://console.aws.amazon.com/systems-manager/quick-setup)
 
 Please feel free to experiment on the different methods mentioned above.
 
@@ -84,6 +85,8 @@ Selecting the Role Name created above:
 
 
 
+
+
 ### Step 3. Download and install CloudWatch Agent using AWS Systems Manager
 
 Open AWS Systems Manager Console and follow the below steps:
@@ -108,6 +111,8 @@ Run Command Status showing success and summarized output:
 
 Run Command Output to check the complete output:
 <kbd>![Run Command Output](images/RunCommandOutput.png)</kbd>
+
+
 
 
 
@@ -145,6 +150,8 @@ Later login to the SSM Parameter Store and check the new entry created and the d
 
 
 
+
+
 ### Step 5. Start CloudWatch agent using AWS Systems Manager
 
 As per the steps listed in Step 3 above, start the CloudWatch agent using SSM Run Command by selecting **AmazonCloudWatch-ManageAgent** configuration document and configuration location to be the Parameter Store entry name along with a Bucket Name to store the command output.
@@ -155,10 +162,13 @@ Lastly, check the status of the CloudWatch agent service using command:
 
 Linux Command(s):
 ```console
-sudo systemctl status amamzon-cloudwatch-agent
+sudo systemctl status amazon-cloudwatch-agent
 ```
 Windows Command(s):
 <kbd>![CloudWatchAgent Status on Windows](images/Windows-ServiceStatus.png)</kbd>
+
+
+
 
 
 ### Step 6. Access CloudWatch console and monitor the Logs and Metrics
@@ -179,9 +189,14 @@ Access the CloudWatch console and check the Logs:
 
 
 
+
+
 ## Cleanup
 
 On the completion of the lab, please feel free to stop the CloudWatch agent on the EC2 instances to avoid any additional charges. Additionally, may terminate the EC2 instances that are launched specifically for this lab.
+
+
+
 
 ## References
 
@@ -199,6 +214,8 @@ On the completion of the lab, please feel free to stop the CloudWatch agent on t
 * [Extra steps for Onprem](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html
 )
 
+
+
 ---
 ## APPENDIX
 
@@ -212,6 +229,17 @@ Depending on the granularity of the metric, the retention time may vary. As of O
 * Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months)
 
 For current values, please verify on this [link](https://aws.amazon.com/cloudwatch/faqs/).
+
+---
+### Using AWS Systems Manager Quick Start for CloudWatch Agent Installation
+
+The mechanism offers to install CloudWatch Agent with default configuration. The custom configuration will be supported in near future.
+
+Access AWS Systems Manager Quick Start Link and select "Edit All" button:
+<kbd>![AWS Systems Manager Quick Start: Select Edit All](images/SSMQuickSetup.png)</kbd>
+
+Select checkboxes for CloudWatch Agent & select desired instances from the registered instances to install CloudWatch Agent:
+<kbd>![AWS Systems Manager Quick Start: Select options for CloudWatch Agent and instances ](images/SSMQuickSetup2.png)</kbd>
 
 ---
 ### Installing the CloudWatch Agent using the Command Line
@@ -282,7 +310,7 @@ gpg --verify amazon-cloudwatch-agent.msi.sig amazon-cloudwatch-agent.msi
 
 **Linux:**  
 ```
-EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm  
+EC2: sudo rpm -U ./amazon-cloudwatch-agent.rpm  => You may use "yum install" syntax too.
 Onprem: sudo aws configure --profile AmazonCloudWatchAgent => Configure the IAM Role & correct region
 ```
 
@@ -366,122 +394,10 @@ ParameterKey=IAMRole,ParameterValue=CloudWatchAgentServerRole \
 ---
 ### Enabling CloudWatch for ECS:
 
-#### Pre-requisites:
-For any Amazon ECS task or service using the EC2 launch type, your Amazon ECS container instances require version 1.4.0 or later of the container agent to enable CloudWatch metrics.
-
-To manually update the Amazon ECS container agent (for non-Amazon ECS-optimized AMIs):
-
-Login to your Container EC2 Instance and run following commands:
-```
-docker inspect ecs-agent | grep ECS_DATADIR
-docker stop ecs-agent
-docker rm ecs-agent
-sudo mkdir -p /etc/ecs && sudo touch /etc/ecs/ecs.config
-```
-Populate the /etc/ecs/ecs.config file:
-```
-ECS_DATADIR=/data
-ECS_ENABLE_TASK_IAM_ROLE=true
-ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true
-ECS_LOGFILE=/log/ecs-agent.log
-ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","awslogs"]
-ECS_LOGLEVEL=info
-ECS_CLUSTER=default
-```
-Update / Install the ECS agent:
-```
-docker pull amazon/amazon-ecs-agent:latest
-systemctl enable docker-container@ecs-agent.service
-systemctl start docker-container@ecs-agent.service
-```
-
-For Windows based container instances, use the below script lines in user-data:
-```
-<powershell>
-Initialize-ECSAgent -Cluster windows -EnableTaskIAMRole -LoggingDrivers '["json-file","awslogs"]'
-</powershell>
-```
-
-#### CloudWatch Logs:
-
-Following are the steps to enable CloudWatch Logs using CLoudWatch agent on your container instances that were launched with the Amazon ECS-optimized Amazon Linux AMI:
-
-1. IAM role for the ECS Instances
-2. Install the CloudWatch Logs Agent
-3. Configure and Start the CloudWatch Logs Agent
-
-
-##### 1. IAM role for the ECS Instances:
-
-Identify the IAM role for the ECS Instances and assign required permissions to create and stream logs
-Configure the below policy and attach it to the existing ECS Instance Role:
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStreams"
-            ],
-            "Resource": [
-                "arn:aws:logs:*:*:*"
-            ]
-        }
-    ]
-}
-```
-
-
-##### 2. Install the CloudWatch Logs Agent
-```
-sudo yum install -y awslogs
-```
-
-##### 3. Configure and Start the CloudWatch Logs Agent
-The configuration file (/etc/awslogs/awslogs.conf) is configured for the Amazon ECS-optimized Amazon Linux AMI, and it provides log streams for several common log files.
-
-```
-sudo mv /etc/awslogs/awslogs.conf /etc/awslogs/awslogs.conf.bak
-sudo touch /etc/awslogs/awslogs.conf
-sudo yum install -y jq
-cluster=$(curl -s http://localhost:51678/v1/metadata | jq -r '. | .Cluster')
-sudo sed -i -e "s/{cluster}/$cluster/g" /etc/awslogs/awslogs.conf
-container_instance_id=$(curl -s http://localhost:51678/v1/metadata | jq -r '. | .ContainerInstanceArn' | awk -F/ '{print $2}' )
-sudo sed -i -e "s/{container_instance_id}/$container_instance_id/g" /etc/awslogs/awslogs.conf
-sudo cat /etc/awslogs/awslogs.conf
-```
-
-Start the CloudWatch Agent:
-```
-Amazon Linux AMI:
-sudo service awslogs start
-sudo chkconfig awslogs on
-
-Amazon Linux 2 AMI:
-sudo systemctl start awslogsd
-sudo systemctl enable awslogsd.service
-```
-
-Additionally, these commands can be populated in the user-data of the Container Instances to ensure any new instance is launched with required configuration.
-
-#### CloudWatch Metrics:
-
-You can monitor your Amazon ECS resources using Amazon CloudWatch, which collects and processes raw data from Amazon ECS into readable, near real-time metrics. These statistics are recorded for a period of two weeks so that you can access historical information and gain a better perspective on how your clusters or services are performing. Amazon ECS metric data is automatically sent to CloudWatch in 1-minute periods.
-
-Any Amazon ECS service using the Fargate launch type is enabled for CloudWatch CPU and memory utilization metrics automatically, so you don't need to take any manual steps.
-For EC2 based ECS, once the ecs-agent is updated to latest version, the default metrics are exported to CloudWatch service.
-You can disable CloudWatch metrics collection by setting ECS_DISABLE_METRICS=true in your Amazon ECS container agent configuration.
-
-Amazon ECS metrics use the AWS/ECS namespace and provide metrics for the following dimensions:
-(a) ClusterName and (b) ServiceName
-
 #### CloudWatch Container Insights:
 
-CloudWatch Container Insights is generally available for Amazon ECS, AWS Fargate, Amazon EKS, and Kubernetes.
+CloudWatch Container Insights is generally available for Amazon ECS, AWS Fargate, Amazon EKS and Kubernetes platforms on Amazon EC2 to collect, aggregate, and summarize metrics and logs from your containerized applications and microservices. Container Insights also provides diagnostic information, such as container restart failures, to help you isolate issues and resolve them quickly. The metrics that Container Insights collects are available in CloudWatch automatic dashboards. You can analyze and troubleshoot container performance and logs data with CloudWatch Logs Insights.
+
 Now, you can monitor, troubleshoot, and set alarms for all your Amazon ECS resources using CloudWatch Container Insights. This fully managed service collects, aggregates, and summarizes Amazon ECS metrics and logs.
 
 To enable Container Insights on new clusters by default:
